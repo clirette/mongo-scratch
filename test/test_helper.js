@@ -10,7 +10,17 @@ before((done) => {
 });
 
 beforeEach((done) => {
-  mongoose.connection.collections.users.drop(() => {
-    done();
+  const { users, comments, blogposts } = mongoose.connection.collections;
+  users.drop(() => {
+    comments.drop(() => {
+      blogposts.drop(() => {
+        done();
+      })
+    })  
   });
+
+  // Promise.all([users.drop(), comments.drop(), blogposts.drop()])
+  // .then(() => {
+  //   done();
+  // })
 });
